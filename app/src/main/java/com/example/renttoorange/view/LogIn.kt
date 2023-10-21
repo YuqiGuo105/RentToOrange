@@ -10,15 +10,23 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.renttoorange.R
 import com.example.renttoorange.dao.UserRepository
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class LogIn : AppCompatActivity() {
     private lateinit var userRepository: UserRepository
+    private val STORAGE_PERMISSION_CODE = 101
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log_in)
-        userRepository = UserRepository(this)
 
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE)
+
+        userRepository = UserRepository(this)
         val btnLogin: Button = findViewById(R.id.loginButton)
         val btnRegister: Button = findViewById(R.id.registerButton)
         val etEmail: EditText = findViewById(R.id.emailEditText)
@@ -43,7 +51,7 @@ class LogIn : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-            val intent = Intent(this, Register::class.java)
+            val intent = Intent(this, RegisterRenter::class.java)
             startActivity(intent)
         }
     }
@@ -55,5 +63,37 @@ class LogIn : AppCompatActivity() {
         editor.putString("userId", user.userId)
         editor.putString("userType", user.userType.name)  // Storing the enum as a string
         editor.apply()
+    }
+
+    private fun checkPermission(permission: String, requestCode: Int) {
+        if (ContextCompat.checkSelfPermission(this@LogIn, permission) == PackageManager.PERMISSION_DENIED) {
+            // Requesting the permission
+            ActivityCompat.requestPermissions(this@LogIn, arrayOf(permission), requestCode)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            STORAGE_PERMISSION_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+                    // Permission denied
+                    showPermissionDialog()
+                }
+            }
+        }
+    }
+
+    private fun showPermissionDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Permission needed")
+            .setMessage("This permission is needed to access your files")
+            .setPositiveButton("Okay") { _, _ ->
+                ActivityCompat.requestPermissions(this@LogIn, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), STORAGE_PERMISSION_CODE)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create().show()
     }
 }
