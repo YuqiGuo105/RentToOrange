@@ -1,6 +1,7 @@
 package com.example.renttoorange.dao
 
 import User
+import android.content.ContentValues
 import android.content.Context
 import android.database.Cursor
 
@@ -9,36 +10,76 @@ class UserRepository(private val context: Context) {
     private val dbHelper = DatabaseHelper(context)
 
     fun getUserByEmailAndPassword(email: String, password: String): User? {
-        val db = dbHelper.readableDatabase
-        val selectQuery = "SELECT * FROM ${DatabaseHelper.TABLE_USER} WHERE ${DatabaseHelper.COLUMN_EMAIL} = ? AND ${DatabaseHelper.COLUMN_PASSWORD} = ?"
-        val cursor: Cursor = db.rawQuery(selectQuery, arrayOf(email, password))
+        val selection = "${DatabaseHelper.COLUMN_EMAIL} = ? AND ${DatabaseHelper.COLUMN_PASSWORD} = ?"
+        val selectionArgs = arrayOf(email, password)
 
-        var user: User? = null
+        val cursor = dbHelper.readableDatabase.query(
+            DatabaseHelper.TABLE_USER,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
 
-        val userIdIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_ID).takeIf { it >= 0 }
-        val emailIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_EMAIL).takeIf { it >= 0 }
-        val passwordIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_PASSWORD).takeIf { it >= 0 }
-        val usernameIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USERNAME).takeIf { it >= 0 }
-        val userTypeIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_USER_TYPE).takeIf { it >= 0 }
+        if (cursor.moveToFirst()) {
+            val userId = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_ID))
+            val userEmail = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_EMAIL))
+            val userPassword = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_PASSWORD))
+            val username = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USERNAME))
+            val userType = UserType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_TYPE)))
 
-        if (cursor.moveToFirst() &&
-            userIdIndex != null &&
-            emailIndex != null &&
-            passwordIndex != null &&
-            usernameIndex != null &&
-            userTypeIndex != null) {
+            cursor.close()
+            return User(userId.toString(), userEmail, userPassword, username, userType)
+        }
+        cursor.close()
+        return null
+    }
 
-            user = User(
-                userId = cursor.getString(userIdIndex),
-                email = cursor.getString(emailIndex),
-                password = cursor.getString(passwordIndex),
-                username = cursor.getString(usernameIndex),
-                userType = UserType.valueOf(cursor.getString(userTypeIndex))
-            )
+
+    fun insertUser(user: User): Long {
+        val db = dbHelper.writableDatabase
+
+        val contentValues = ContentValues().apply {
+            put(DatabaseHelper.COLUMN_EMAIL, user.email)
+            put(DatabaseHelper.COLUMN_PASSWORD, user.password)
+            put(DatabaseHelper.COLUMN_USERNAME, user.username)
+            put(DatabaseHelper.COLUMN_USER_TYPE, user.userType.toString())
         }
 
-        cursor.close()
-        return user
+        return db.insert(DatabaseHelper.TABLE_USER, null, contentValues)
+    }
+
+    fun getUserByEmail(email: String): User? {
+        val db = dbHelper.readableDatabase
+        val selection = "${DatabaseHelper.COLUMN_EMAIL} = ?"
+        val selectionArgs = arrayOf(email)
+
+        val cursor = db.query(
+            DatabaseHelper.TABLE_USER,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+
+        if (cursor?.moveToFirst() == true) {
+            val user = User(
+                userId = cursor.getLong(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_ID)).toString(),
+                email = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_EMAIL)),
+                password = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_PASSWORD)),
+                username = cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USERNAME)),
+                userType = UserType.valueOf(cursor.getString(cursor.getColumnIndexOrThrow(DatabaseHelper.COLUMN_USER_TYPE)))
+            )
+            cursor.close()
+            return user
+        }
+
+        cursor?.close()
+        return null
     }
 
 }
