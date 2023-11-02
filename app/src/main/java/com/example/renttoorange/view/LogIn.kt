@@ -60,6 +60,7 @@ class LogIn : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putString("username", user.username)
         editor.putString("userId", user.userId)
+        editor.putString("userEmail", user.email)
         editor.putString("userType", user.userType.name)  // Storing the enum as a string
         editor.apply()
     }

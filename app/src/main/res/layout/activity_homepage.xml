@@ -15,6 +15,14 @@
         android:layout_marginBottom="16dp"
         android:text="Welcome, User!" />
 
+    <ImageView
+        android:id="@+id/ivUserProfile"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_launcher" />
+
     <Button
         android:id="@+id/btnLogout"
         android:layout_width="wrap_content"
