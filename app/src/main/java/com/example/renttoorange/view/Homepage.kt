@@ -1,64 +1,51 @@
 package com.example.renttoorange.view
 
-import User
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.fragment.app.Fragment
 import com.example.renttoorange.R
-import com.example.renttoorange.dao.UserRepository
+import com.example.renttoorange.view.MainFragments.CategoryFragment
+import com.example.renttoorange.view.MainFragments.HomePageFragment
+import com.example.renttoorange.view.MainFragments.UserAccountFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class Homepage : AppCompatActivity() {
-    private lateinit var profileImageView: ImageView
-    private lateinit var usernameTextView: TextView
-    private lateinit var logoutButton: Button
-    private lateinit var userRepository: UserRepository
+    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_homepage)
 
-        // Initialize views and repository
-        profileImageView = findViewById(R.id.ivUserProfile)
-        usernameTextView = findViewById(R.id.tvUsername)
-        logoutButton = findViewById(R.id.btnLogout)
-        userRepository = UserRepository(this)
-
-        // Load user information
-        loadUserInfo()
-
-        // Setup logout button
-        logoutButton.setOnClickListener {
-            logout()
-        }
-    }
-
-    private fun loadUserInfo() {
-        val sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE)
-        val userEmail = sharedPreferences.getString("userEmail", null)
-        userEmail?.let {
-            val user = userRepository.getUserByEmail(it)
-            user?.let { user ->
-                updateUI(user)
+        bottomNavigationView = findViewById(R.id.bottom_navigation)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    replaceFragment(HomePageFragment())
+                    true
+                }
+                R.id.nav_category -> {
+                     replaceFragment(CategoryFragment())
+                    true
+                }
+                R.id.nav_user_account -> {
+                     replaceFragment(UserAccountFragment())
+                    true
+                }
+                else -> false
             }
         }
+
+        // Select 'home' by default
+        bottomNavigationView.selectedItemId = R.id.nav_home
     }
 
-    private fun updateUI(user: User) {
-        usernameTextView.text = user.username
-
-        user.image?.let {
-            val bitmap = BitmapFactory.decodeByteArray(it, 0, it.size)
-            profileImageView.setImageBitmap(bitmap)
-        } ?: run {
-            // Handle the case where the image is null, e.g., set a default image
-            profileImageView.setImageResource(R.drawable.otto)
-        }
+    private fun replaceFragment(fragment: Fragment) {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fragment_container, fragment)
+        fragmentTransaction.commit()
     }
 
     private fun logout() {
