@@ -13,8 +13,10 @@ import android.widget.ImageView
 import android.widget.Spinner
 import android.widget.Toast
 import com.example.renttoorange.R
+import com.example.renttoorange.dao.RentInfoRepository
 import com.example.renttoorange.model.HouseType
 import com.example.renttoorange.model.RentInfo
+import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.UUID
@@ -28,6 +30,8 @@ class PostRentInfo : AppCompatActivity() {
     private var imageUri: Uri? = null
     private lateinit var spinnerHouseType: Spinner
 
+    private val database = FirebaseDatabase.getInstance()
+    private val rentInfoRef = database.getReference("rentInfo")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

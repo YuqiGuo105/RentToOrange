@@ -45,17 +45,4 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.2")
-    implementation("io.github.jan-tennert.supabase:postgrest-kt:0.7.6")
-    implementation("io.ktor:ktor-client-cio:2.3.3")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.2.0")
-
-//    implementation("io.github.jan-tennert.supabase:gotrue-kt:1.3.2")
-//    implementation("io.github.jan-tennert.supabase:compose-auth:1.3.2")
-//    implementation("io.github.jan-tennert.supabase:compose-auth-ui:1.3.2")
-//    implementation("io.github.jan-tennert.supabase:storage-kt:1.3.2")
-
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
-    implementation("io.coil-kt:coil-compose:2.4.0")
 }
