@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "700236167787",
+    "project_id": "renttoorange-5f4fc",
+    "storage_bucket": "renttoorange-5f4fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700236167787:android:755ddee9478c752c4e8f2e",
+        "android_client_info": {
+          "package_name": "com.example.renttoorange"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhavpH7pRZD12XHCAi5yWKGso9sS5trY4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
