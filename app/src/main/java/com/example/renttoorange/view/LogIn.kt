@@ -40,7 +40,6 @@ class LogIn : AppCompatActivity() {
 
             if (user != null) {
                 saveUserDetailsToPreferences(user)
-
                 // Redirect to HomepageActivity
                 val intent = Intent(this, Homepage::class.java)
                 startActivity(intent)
@@ -51,7 +50,7 @@ class LogIn : AppCompatActivity() {
         }
 
         btnRegister.setOnClickListener {
-            val intent = Intent(this, RegisterRenter::class.java)
+            val intent = Intent(this, Register::class.java)
             startActivity(intent)
         }
     }
@@ -61,7 +60,9 @@ class LogIn : AppCompatActivity() {
         val editor = sharedPreferences.edit()
         editor.putString("username", user.username)
         editor.putString("userId", user.userId)
-        editor.putString("userType", user.userType.name)  // Storing the enum as a string
+        editor.putString("userEmail", user.email)
+        editor.putString("userType", user.userType.name)
+
         editor.apply()
     }
 

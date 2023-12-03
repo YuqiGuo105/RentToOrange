@@ -15,6 +15,15 @@
         android:theme="@style/Theme.RentToOrange"
         tools:targetApi="31">
         <activity
+            android:name=".view.Rental.PostRentInfo"
+            android:exported="false" />
+        <activity
+            android:name=".view.Post"
+            android:exported="false" />
+        <activity
+            android:name=".view.Register"
+            android:exported="false" />
+        <activity
             android:name=".view.Register"
             android:exported="false" />
         <activity
