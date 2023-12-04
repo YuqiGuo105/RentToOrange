@@ -16,17 +16,21 @@ import com.example.renttoorange.R
 import com.example.renttoorange.dao.UserRepository
 import com.example.renttoorange.view.LogIn
 import com.example.renttoorange.view.Rental.PostRentInfo
+import com.google.firebase.auth.FirebaseAuth
 
 class UserAccountFragment : Fragment() {
     private lateinit var usernameTextView: TextView
     private lateinit var profileImageView: ImageView
     private lateinit var logoutButton: Button
 
+    private lateinit var auth: FirebaseAuth
     private lateinit var userRepository: UserRepository
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        userRepository = UserRepository(context)  // Initialize userRepository with the context.
+
+        auth = FirebaseAuth.getInstance()
+        userRepository = UserRepository(auth)
     }
 
     override fun onCreateView(
@@ -60,7 +64,7 @@ class UserAccountFragment : Fragment() {
         val sharedPreferences = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userEmail = sharedPreferences?.getString("userEmail", null)
         userEmail?.let {
-            val user = userRepository.getUserByEmail(it)
+            val user = userRepository.fetchUserInfo()
             user?.let { user ->
                 updateUI(user)
             }
@@ -70,13 +74,13 @@ class UserAccountFragment : Fragment() {
     private fun updateUI(user: User) {
         usernameTextView.text = user.username
 
-        // Convert ByteArray to Bitmap if the image data is not null and not empty
-        user.image?.let { imageByteArray ->
-            if (imageByteArray.isNotEmpty()) {
-                val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
-                profileImageView.setImageBitmap(bitmap)
-            }
-        }
+//        // Convert ByteArray to Bitmap if the image data is not null and not empty
+//        user.image?.let { imageByteArray ->
+//            if (imageByteArray.isNotEmpty()) {
+//                val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
+//                profileImageView.setImageBitmap(bitmap)
+//            }
+//        }
     }
 
     private fun logout() {
