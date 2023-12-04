@@ -1,22 +1,29 @@
 package com.example.renttoorange.view
 
 import User
+import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
 import android.widget.Toast
 import com.example.renttoorange.R
 import com.example.renttoorange.dao.UserRepository
+import com.google.firebase.auth.FirebaseAuth
 import kotlin.random.Random
 
 class Register : AppCompatActivity() {
-    private val userRepository by lazy { UserRepository(this) }
+    private lateinit var auth: FirebaseAuth
+    private lateinit var userRepository: UserRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
+
+        auth = FirebaseAuth.getInstance()
+        userRepository = UserRepository(auth)
 
         val etEmail: EditText = findViewById(R.id.etEmail)
         val etPassword: EditText = findViewById(R.id.etPassword)
@@ -69,19 +76,18 @@ class Register : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Check if user with the given email already exists
-            if (userRepository.getUserByEmail(email) != null) {
-                Toast.makeText(this, "Account with this email already exists!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
+            userRepository.registerUser(email, password, username, userType) { user ->
+                if (user != null) {
+                    // Registration success, update UI
+                    Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
 
-            val newUser = User(email = email, password = password, username = username, userType = userType)
-            userRepository.insertUser(newUser)
+                } else {
+                    // Registration failure, update UI
+                    Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                }
+            }
             Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun generateVerificationCode(): String {
-        return Random.nextInt(100000, 999999).toString()
-    }
 }
