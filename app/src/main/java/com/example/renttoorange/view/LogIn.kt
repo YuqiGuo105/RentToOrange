@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 class LogIn : AppCompatActivity() {
     private val STORAGE_PERMISSION_CODE = 101
     private lateinit var auth: FirebaseAuth
-    private lateinit var userRepository: UserRepository
+    private val userRepository: UserRepository by lazy { UserRepository(FirebaseAuth.getInstance()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +31,6 @@ class LogIn : AppCompatActivity() {
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE)
 
         auth = FirebaseAuth.getInstance()
-        userRepository = UserRepository(auth)
 
         val btnLogin: Button = findViewById(R.id.loginButton)
         val btnRegister: Button = findViewById(R.id.registerButton)
@@ -42,17 +41,6 @@ class LogIn : AppCompatActivity() {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
             loginUser(email, password)
-//            val user = userRepository.getUserByEmailAndPassword(email, password)
-//
-//            if (user != null) {
-//                saveUserDetailsToPreferences(user)
-//                // Redirect to HomepageActivity
-//                val intent = Intent(this, Homepage::class.java)
-//                startActivity(intent)
-//                finish()
-//            } else {
-//                 Toast.makeText(this, "Invalid login credentials", Toast.LENGTH_SHORT).show()
-//            }
         }
 
         btnRegister.setOnClickListener {
@@ -68,7 +56,9 @@ class LogIn : AppCompatActivity() {
                     // Sign in success, update UI with the signed-in user's information
                     Log.d(TAG, "signInWithEmail:success")
                     Toast.makeText(this, "Sign In:success", Toast.LENGTH_SHORT).show()
-                    val user = auth.currentUser
+
+                    // Login successful, now fetch and save user info
+                    loadUserInfoAndSaveToPreferences()
 
                     val intent = Intent(this, Homepage::class.java)
                     startActivity(intent)
@@ -83,6 +73,15 @@ class LogIn : AppCompatActivity() {
             }
     }
 
+    private fun loadUserInfoAndSaveToPreferences() {
+        userRepository.fetchUserInfo { user ->
+            user?.let {
+                saveUserDetailsToPreferences(it)
+            } ?: run {
+                // Handle the case when the user is null
+            }
+        }
+    }
 
     private fun saveUserDetailsToPreferences(user: User) {
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
