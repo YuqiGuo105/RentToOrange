@@ -1,11 +1,11 @@
 import java.util.UUID
 
 data class User(
-    val userId: String = UUID.randomUUID().toString(),
-    val email: String,
-    val username: String,
-    val userType: UserType,
-    val image: String
+    var userId: String = "",
+    var email: String = "",
+    var username: String = "",
+    var userType: UserType = UserType.RENTER, // Assuming UserType.RENTER is a default value
+    var image: String = ""
 )
 
 enum class UserType {

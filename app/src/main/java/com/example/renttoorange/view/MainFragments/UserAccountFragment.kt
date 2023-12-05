@@ -17,6 +17,7 @@ import com.example.renttoorange.dao.UserRepository
 import com.example.renttoorange.view.LogIn
 import com.example.renttoorange.view.Rental.PostRentInfo
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class UserAccountFragment : Fragment() {
     private lateinit var usernameTextView: TextView
@@ -63,24 +64,26 @@ class UserAccountFragment : Fragment() {
     private fun loadUserInfo() {
         val sharedPreferences = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userEmail = sharedPreferences?.getString("userEmail", null)
+
         userEmail?.let {
-            val user = userRepository.fetchUserInfo()
-            user?.let { user ->
-                updateUI(user)
+            userRepository.fetchUserInfo { user ->
+                user?.let {
+                    updateUI(it)
+                } ?: run {
+                    // Handle the case when the user is null (not found or not logged in)
+                }
             }
+        } ?: run {
+            // Handle the case when userEmail is null (no email stored in shared preferences)
         }
     }
 
     private fun updateUI(user: User) {
         usernameTextView.text = user.username
 
-//        // Convert ByteArray to Bitmap if the image data is not null and not empty
-//        user.image?.let { imageByteArray ->
-//            if (imageByteArray.isNotEmpty()) {
-//                val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
-//                profileImageView.setImageBitmap(bitmap)
-//            }
-//        }
+        Picasso.get()
+            .load(user.image)
+            .into(profileImageView)
     }
 
     private fun logout() {
