@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.renttoorange.R
 import com.example.renttoorange.dao.UserRepository
+import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class HomePageFragment : Fragment() {
     private lateinit var usernameTextView: TextView
@@ -21,11 +23,14 @@ class HomePageFragment : Fragment() {
     private lateinit var adViewPager: ViewPager2
     private lateinit var rentalRecyclerView: RecyclerView
 
+    private lateinit var auth: FirebaseAuth
     private lateinit var userRepository: UserRepository
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        userRepository = UserRepository(context)  // Initialize userRepository with the context.
+
+        auth = FirebaseAuth.getInstance()
+        userRepository = UserRepository(auth)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -42,31 +47,32 @@ class HomePageFragment : Fragment() {
         rentalRecyclerView = view.findViewById(R.id.recyclerview_rental_info)
 
         loadUserInfo()
-//        setupAdBanner()
-//        setupRentalRecyclerView()
+
     }
 
     private fun loadUserInfo() {
         val sharedPreferences = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userEmail = sharedPreferences?.getString("userEmail", null)
+
         userEmail?.let {
-            val user = userRepository.getUserByEmail(it)
-            user?.let { user ->
-                updateUI(user)
+            userRepository.fetchUserInfo { user ->
+                user?.let {
+                    updateUI(it)
+                } ?: run {
+                    // Handle the case when the user is null (not found or not logged in)
+                }
             }
+        } ?: run {
+            // Handle the case when userEmail is null (no email stored in shared preferences)
         }
     }
 
     private fun updateUI(user: User) {
         usernameTextView.text = user.username
 
-        // Convert ByteArray to Bitmap if the image data is not null and not empty
-        user.image?.let { imageByteArray ->
-            if (imageByteArray.isNotEmpty()) {
-                val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
-                profileImageView.setImageBitmap(bitmap)
-            }
-        }
+        Picasso.get()
+            .load(user.image)
+            .into(profileImageView)
     }
 
 

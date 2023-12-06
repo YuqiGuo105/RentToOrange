@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@android:color/white">
+    android:background="@color/grey">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -11,29 +12,51 @@
         android:orientation="vertical"
         android:gravity="center_horizontal">
 
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Register"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="40dp"
+            android:textColor="@color/orange"
+            android:textStyle="bold"
+            android:textSize="50sp">
+
+        </TextView>
+
         <EditText
             android:id="@+id/etEmail"
             android:layout_width="379dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:hint="Email"
+            android:background="@drawable/rounded_edittext"
+            android:paddingLeft="15dp"
+            android:textSize="28sp"
+            android:layout_marginBottom="15dp"
             android:inputType="textEmailAddress" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp">
+            android:layout_marginBottom="15dp"
+            >
 
 
             <EditText
                 android:id="@+id/etVerificationCode"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="2"
                 android:layout_height="wrap_content"
                 android:hint="Verification Code"
                 android:inputType="number"
-                android:visibility="visible"/>
+                android:visibility="visible"
+                android:background="@drawable/rounded_edittext"
+                android:paddingLeft="15dp"
+                android:textSize="28sp"/>
 
             <Button
                 android:id="@+id/btnSendVerification"
@@ -41,7 +64,8 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:text="Send Code"
-                android:layout_marginStart="8dp"/>
+                android:backgroundTint ="@color/orange"
+                android:layout_marginStart="10dp"/>
 
         </LinearLayout>
 
@@ -51,15 +75,21 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:background="@drawable/rounded_edittext"
+            android:paddingLeft="15dp"
+            android:textSize="28sp"/>
 
         <EditText
             android:id="@+id/etConfirmPasswordRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:hint="Confirm Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:background="@drawable/rounded_edittext"
+            android:layout_marginBottom="15dp"
+            android:paddingLeft="15dp"
+            android:textSize="28sp"/>
 
 
         <EditText
@@ -68,25 +98,36 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:hint="Username"
-            android:inputType="text" />
+            android:inputType="text"
+            android:background="@drawable/rounded_edittext"
+            android:paddingLeft="15dp"
+            android:textSize="28sp"/>
 
         <RadioGroup
             android:id="@+id/userTypeRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp">
 
             <RadioButton
                 android:id="@+id/radioRenter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Renter" />
+                android:layout_weight="1"
+                android:text="Renter"
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
 
             <RadioButton
                 android:id="@+id/radioLandlord"
+                android:layout_weight="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Landlord" />
+                android:text="Landlord"
+                android:textSize="15sp"
+                android:textColor="@color/white"/>
 
         </RadioGroup>
 
@@ -95,6 +136,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Register"
+            android:backgroundTint ="@color/orange"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="32dp"/>
 
