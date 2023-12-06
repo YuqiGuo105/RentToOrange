@@ -6,4 +6,9 @@
     <string name="title_home">Home</string>
     <string name="title_category">"Category "</string>
     <string name="title_user">Account</string>
+    <string name="listing_address">Address</string>
+    <string name="txt_rent_price">$0.0</string>
+    <string name="txt_search">Search Now</string>
+    <string name="ad_banner_content_description">This is an ad</string>
+    <string name="txt_advertisement">Sponsored</string>
 </resources>
