@@ -3,7 +3,6 @@ package com.example.renttoorange.view.MainFragments
 import User
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.renttoorange.R
 import com.example.renttoorange.dao.UserRepository
@@ -21,8 +21,11 @@ import com.squareup.picasso.Picasso
 
 class UserAccountFragment : Fragment() {
     private lateinit var usernameTextView: TextView
+    private lateinit var userTypeTextView: TextView
     private lateinit var profileImageView: ImageView
-    private lateinit var logoutButton: Button
+
+    private lateinit var logoutButton: LinearLayout // Change to LinearLayout
+    private lateinit var postRentInfoButton: LinearLayout // Change to LinearLayout
 
     private lateinit var auth: FirebaseAuth
     private lateinit var userRepository: UserRepository
@@ -44,7 +47,8 @@ class UserAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        usernameTextView = view.findViewById(R.id.usernameTextView)
+        usernameTextView = view.findViewById(R.id.userNameTextView)
+        userTypeTextView = view.findViewById(R.id.userTypeTextView)
         profileImageView = view.findViewById(R.id.profileImageView)
 
         loadUserInfo()
@@ -54,8 +58,8 @@ class UserAccountFragment : Fragment() {
             logout()
         }
 
-        val btnNavigate = view.findViewById<Button>(R.id.postRentInfo)
-        btnNavigate.setOnClickListener {
+        postRentInfoButton = view.findViewById(R.id.postRentInfo)
+        postRentInfoButton.setOnClickListener {
             val intent = Intent(activity, PostRentInfo::class.java)
             startActivity(intent)
         }
@@ -80,6 +84,7 @@ class UserAccountFragment : Fragment() {
 
     private fun updateUI(user: User) {
         usernameTextView.text = user.username
+        userTypeTextView.text = user.userType.toString()
 
         Picasso.get()
             .load(user.image)
