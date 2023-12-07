@@ -23,29 +23,29 @@ class CategoryFragment : Fragment() {
     private lateinit var rentInfoRecyclerView: RecyclerView
     private val rentInfoRepository = RentInfoRepository()
     private var selectedCategory: HouseType? = null // null represents
+    private val categories = listOf("ALL", "APARTMENT", "HOUSE", "STUDIO")
+    private lateinit var categoryRecyclerView: RecyclerView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_category, container, false)
 
-        rentInfoRecyclerView = view.findViewById(R.id.rentInfoRecyclerView)
-        rentInfoRecyclerView.layoutManager = LinearLayoutManager(context)
-
-        // Initialize buttons and set click listeners
-        view.findViewById<Button>(R.id.all).setOnClickListener { changeCategory(null) }
-        view.findViewById<Button>(R.id.btnApartment).setOnClickListener { changeCategory(HouseType.APARTMENT) }
-        view.findViewById<Button>(R.id.btnHouse).setOnClickListener { changeCategory(HouseType.HOUSE) }
-
-
-        rentInfoRepository.retrieveAllRentInfo { rentInfoList ->
-            rentInfoList?.let {
-                val filteredList = it.filter { rentInfo -> rentInfo.category == selectedCategory }
-                rentInfoRecyclerView.adapter = RentInfoAdapter(filteredList)
-            } ?: run {
-                // Handle the error scenario
-            }
+        // Set up the category RecyclerView
+        categoryRecyclerView = view.findViewById(R.id.category_recycler_view)
+        categoryRecyclerView.layoutManager = LinearLayoutManager(activity)
+        categoryRecyclerView.adapter = CategoryAdapter(categories) { categoryString ->
+            val category = if (categoryString == "ALL") null else HouseType.valueOf(categoryString)
+            // Change the category based on selection
+            changeCategory(category)
         }
 
+        // Initialize rent info RecyclerView
+        rentInfoRecyclerView = view.findViewById(R.id.rent_info_recycler_view)
+        rentInfoRecyclerView.layoutManager = LinearLayoutManager(activity)
+        rentInfoRecyclerView.adapter = RentInfoAdapter(listOf())
 
+        // Set the default category to 'ALL'
+        changeCategory(null)
+        
         return view
     }
 

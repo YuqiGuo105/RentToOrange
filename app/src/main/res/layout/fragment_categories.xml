@@ -2,13 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="8dp">
 
+    <ImageView
+        android:id="@+id/image_view_category_icon"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_category"
+        android:contentDescription="@string/category_icon_description"
+        android:layout_gravity="center_vertical"
+        android:paddingEnd="8dp" />
+
     <TextView
-        android:id="@+id/textview_category_name"
-        android:layout_width="match_parent"
+        android:id="@+id/text_view_category"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="16sp" />
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:textAppearance="?attr/textAppearanceListItem" />
 </LinearLayout>

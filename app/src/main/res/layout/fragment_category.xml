@@ -4,42 +4,35 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <!-- Left side Category List -->
+    <FrameLayout
+        android:id="@+id/categoryContainer"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_weight="1">
 
-        <Button
-            android:id="@+id/all"
+        <!-- The RecyclerView for categories -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ALL" />
+            android:layout_height="match_parent" />
 
-        <Button
-            android:id="@+id/btnApartment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Apartment" />
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/btnHouse"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="House" />
-
-        <Button
-            android:id="@+id/btnStudio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Studio" />
-
-    </LinearLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rentInfoRecyclerView"
-        android:layout_width="match_parent"
+    <!-- Right side Rent Info List -->
+    <FrameLayout
+        android:id="@+id/rentInfoContainer"
+        android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical" />
+        android:layout_weight="3"
+        android:layout_toRightOf="@id/categoryContainer">
 
+        <!-- The RecyclerView for rent info -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rent_info_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
 
 </LinearLayout>
