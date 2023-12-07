@@ -14,10 +14,12 @@ class RentInfoAdapter(private val rentInfoList: List<RentInfo>) : RecyclerView.A
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val titleTextView: TextView = view.findViewById(R.id.textViewTitle)
+        val textViewPrice: TextView = view.findViewById(R.id.textViewPrice)
         val imageImageView: ImageView = view.findViewById(R.id.imageViewRent)
 
         fun bind(rentInfo: RentInfo) {
             titleTextView.text = rentInfo.title
+            textViewPrice.text = "$${rentInfo.rent}"
             if (rentInfo.imageUrl != null && rentInfo.imageUrl.isNotEmpty()) {
                 Picasso.get()
                     .load(rentInfo.imageUrl)
