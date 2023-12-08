@@ -8,4 +8,6 @@
     <string name="title_user">Account</string>
     <string name="post_rent_info">Post rent</string>
     <string name="logout">Log out</string>
+    <string name="sponsored_txt">Sponsored:</string>
+    <string name="available_to_rent_txt">Available to Rent:</string>
 </resources>

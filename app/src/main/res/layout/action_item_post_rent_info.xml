@@ -22,5 +22,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:text="@string/post_rent_info"
+        android:textColor="@color/white"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 </LinearLayout>
