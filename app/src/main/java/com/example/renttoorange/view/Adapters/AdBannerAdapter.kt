@@ -1,3 +1,4 @@
+// AdBannerAdapter.kt
 package com.example.renttoorange.view.Adapters
 
 import android.view.LayoutInflater
@@ -13,25 +14,24 @@ import com.squareup.picasso.Picasso
 class AdBannerAdapter(private val ads: List<Ad>) : RecyclerView.Adapter<AdBannerAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val titleTextView: TextView = view.findViewById(R.id.txtview_ad_title)
-        val imageImageView: ImageView = view.findViewById(R.id.imageview_ad)
+        val imageViewAd: ImageView = view.findViewById(R.id.imageViewAd)
+        val textViewTitle: TextView = view.findViewById(R.id.textViewTitle)
+        val textViewAdAddress: TextView = view.findViewById(R.id.textViewAdAddress)
 
         fun bind(ad: Ad) {
-            titleTextView.text = ad.title
-            if (ad.imageUrl != null && ad.imageUrl.isNotEmpty()) {
-                Picasso.get()
-                    .load(ad.imageUrl)
-                    .into(imageImageView)
-            } else {
-                Picasso.get()
-                    .load("https://firebasestorage.googleapis.com/v0/b/renttoorange-5f4fc.appspot.com/o/rentInfo%2Ferror.png?alt=media&token=7b41c24d-a757-44b6-8118-dd28dbff4df4")
-                    .into(imageImageView)
-            }
+            // Load ad image using Picasso
+            Picasso.get()
+                .load(ad.imageUrl)
+                .into(imageViewAd)
+
+            textViewTitle.text = ad.title
+            // Set ad address
+            textViewAdAddress.text = ad.address
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ad_banner, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.ad_banner_item, parent, false)
         return ViewHolder(view)
     }
 

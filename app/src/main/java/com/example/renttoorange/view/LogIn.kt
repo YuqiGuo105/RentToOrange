@@ -11,14 +11,18 @@ import android.widget.Toast
 import com.example.renttoorange.R
 import com.example.renttoorange.dao.UserRepository
 import android.Manifest
+import android.content.ContentValues.TAG
 import android.content.pm.PackageManager
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.firebase.auth.FirebaseAuth
 
 class LogIn : AppCompatActivity() {
-    private lateinit var userRepository: UserRepository
     private val STORAGE_PERMISSION_CODE = 101
+    private lateinit var auth: FirebaseAuth
+    private val userRepository: UserRepository by lazy { UserRepository(FirebaseAuth.getInstance()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +30,8 @@ class LogIn : AppCompatActivity() {
 
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, STORAGE_PERMISSION_CODE)
 
-        userRepository = UserRepository(this)
+        auth = FirebaseAuth.getInstance()
+
         val btnLogin: Button = findViewById(R.id.loginButton)
         val btnRegister: Button = findViewById(R.id.registerButton)
         val etEmail: EditText = findViewById(R.id.emailEditText)
@@ -35,23 +40,46 @@ class LogIn : AppCompatActivity() {
         btnLogin.setOnClickListener {
             val email = etEmail.text.toString().trim()
             val password = etPassword.text.toString().trim()
-
-            val user = userRepository.getUserByEmailAndPassword(email, password)
-
-            if (user != null) {
-                saveUserDetailsToPreferences(user)
-                // Redirect to HomepageActivity
-                val intent = Intent(this, Homepage::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                 Toast.makeText(this, "Invalid login credentials", Toast.LENGTH_SHORT).show()
-            }
+            loginUser(email, password)
         }
 
         btnRegister.setOnClickListener {
             val intent = Intent(this, Register::class.java)
             startActivity(intent)
+        }
+    }
+
+    private fun loginUser(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithEmail:success")
+                    Toast.makeText(this, "Sign In:success", Toast.LENGTH_SHORT).show()
+
+                    // Login successful, now fetch and save user info
+                    loadUserInfoAndSaveToPreferences()
+
+                    val intent = Intent(this, Homepage::class.java)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(
+                        baseContext,
+                        "Authentication failed.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+    }
+
+    private fun loadUserInfoAndSaveToPreferences() {
+        userRepository.fetchUserInfo { user ->
+            user?.let {
+                saveUserDetailsToPreferences(it)
+            } ?: run {
+                // Handle the case when the user is null
+            }
         }
     }
 

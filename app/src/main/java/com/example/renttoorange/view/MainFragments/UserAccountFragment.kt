@@ -3,7 +3,6 @@ package com.example.renttoorange.view.MainFragments
 import User
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,22 +10,31 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.renttoorange.R
 import com.example.renttoorange.dao.UserRepository
 import com.example.renttoorange.view.LogIn
 import com.example.renttoorange.view.Rental.PostRentInfo
+import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 
 class UserAccountFragment : Fragment() {
     private lateinit var usernameTextView: TextView
+    private lateinit var userTypeTextView: TextView
     private lateinit var profileImageView: ImageView
-    private lateinit var logoutButton: Button
 
+    private lateinit var logoutButton: LinearLayout // Change to LinearLayout
+    private lateinit var postRentInfoButton: LinearLayout // Change to LinearLayout
+
+    private lateinit var auth: FirebaseAuth
     private lateinit var userRepository: UserRepository
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        userRepository = UserRepository(context)  // Initialize userRepository with the context.
+
+        auth = FirebaseAuth.getInstance()
+        userRepository = UserRepository(auth)
     }
 
     override fun onCreateView(
@@ -39,7 +47,8 @@ class UserAccountFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        usernameTextView = view.findViewById(R.id.usernameTextView)
+        usernameTextView = view.findViewById(R.id.userNameTextView)
+        userTypeTextView = view.findViewById(R.id.userTypeTextView)
         profileImageView = view.findViewById(R.id.profileImageView)
 
         loadUserInfo()
@@ -49,8 +58,8 @@ class UserAccountFragment : Fragment() {
             logout()
         }
 
-        val btnNavigate = view.findViewById<Button>(R.id.postRentInfo)
-        btnNavigate.setOnClickListener {
+        postRentInfoButton = view.findViewById(R.id.postRentInfo)
+        postRentInfoButton.setOnClickListener {
             val intent = Intent(activity, PostRentInfo::class.java)
             startActivity(intent)
         }
@@ -59,24 +68,27 @@ class UserAccountFragment : Fragment() {
     private fun loadUserInfo() {
         val sharedPreferences = activity?.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
         val userEmail = sharedPreferences?.getString("userEmail", null)
+
         userEmail?.let {
-            val user = userRepository.getUserByEmail(it)
-            user?.let { user ->
-                updateUI(user)
+            userRepository.fetchUserInfo { user ->
+                user?.let {
+                    updateUI(it)
+                } ?: run {
+                    // Handle the case when the user is null (not found or not logged in)
+                }
             }
+        } ?: run {
+            // Handle the case when userEmail is null (no email stored in shared preferences)
         }
     }
 
     private fun updateUI(user: User) {
         usernameTextView.text = user.username
+        userTypeTextView.text = user.userType.toString()
 
-        // Convert ByteArray to Bitmap if the image data is not null and not empty
-        user.image?.let { imageByteArray ->
-            if (imageByteArray.isNotEmpty()) {
-                val bitmap = BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.size)
-                profileImageView.setImageBitmap(bitmap)
-            }
-        }
+        Picasso.get()
+            .load(user.image)
+            .into(profileImageView)
     }
 
     private fun logout() {

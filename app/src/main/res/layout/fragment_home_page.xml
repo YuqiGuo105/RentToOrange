@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="10dp"
     tools:context=".view.MainFragments.HomePageFragment">
 
     <!-- User profile section at the top -->
@@ -12,11 +13,11 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="16dp"
+        android:contentDescription="@string/profile_image"
         android:src="@drawable/ic_user"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:contentDescription="@string/profile_image"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textview_username"
@@ -27,9 +28,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/imageview_profile"
+
         tools:text="Username" />
 
     <!-- Scrolling advertisement banner -->
+    <TextView
+        android:id="@+id/textView_sponsored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:text="@string/sponsored_txt"
+        app:layout_constraintBottom_toTopOf="@id/viewpager_ad_banner"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textview_username" />
+
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewpager_ad_banner"
         android:layout_width="0dp"
@@ -37,17 +50,28 @@
         android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textview_username" />
+        app:layout_constraintTop_toBottomOf="@id/textView_sponsored" />
 
     <!-- Rental information list -->
+    <TextView
+        android:id="@+id/textview_available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/available_to_rent_txt"
+        app:layout_constraintBottom_toTopOf="@id/recyclerview_rental_info"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/viewpager_ad_banner" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_rental_info"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/viewpager_ad_banner" />
+        app:layout_constraintTop_toBottomOf="@id/textview_available" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
