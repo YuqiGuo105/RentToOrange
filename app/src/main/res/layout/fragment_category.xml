@@ -9,13 +9,13 @@
         android:id="@+id/categoryContainer"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1.75">
 
         <!-- The RecyclerView for categories -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/category_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="140dp"
+            android:layout_height="720dp" />
 
     </FrameLayout>
 

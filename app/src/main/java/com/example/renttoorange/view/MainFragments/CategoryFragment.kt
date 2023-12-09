@@ -45,7 +45,7 @@ class CategoryFragment : Fragment() {
 
         // Set the default category to 'ALL'
         changeCategory(null)
-        
+
         return view
     }
 
