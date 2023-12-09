@@ -7,9 +7,9 @@
 
     <ImageView
         android:id="@+id/imageViewRent"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:scaleType="centerCrop"/>
+        android:layout_width="272dp"
+        android:layout_height="145dp"
+        android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/textViewTitle"
