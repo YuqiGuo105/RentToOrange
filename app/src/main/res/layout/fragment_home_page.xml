@@ -32,11 +32,18 @@
 
                     <ImageView
                         android:id="@+id/imageView_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_gravity="center_vertical"
                         android:src="@drawable/ic_user"
                         android:contentDescription="@string/profile_image"
-                        android:padding="16dp" />
+                        android:padding="8dp"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"/>
+
 
                     <EditText
                         android:id="@+id/search_edit_text"
@@ -66,12 +73,20 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- Existing ConstraintLayout from your fragment_home_page.xml -->
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Scrolling advertisement banner -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager_ad_banner"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <!-- Rest of your existing layout goes here -->
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="200dp"
+            android:layout_marginTop="8dp" />
+
+        <!-- Rental information list -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_rental_info"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
     </LinearLayout>
 
     <!-- NavigationView for the drawer -->

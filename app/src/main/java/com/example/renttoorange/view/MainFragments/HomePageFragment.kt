@@ -73,6 +73,12 @@ class HomePageFragment : Fragment() {
         drawerProfileImageView = headerView.findViewById(R.id.imageView_header_profile) // The ID of your ImageView in the nav_header_main.xml
         drawerUsernameTextView = headerView.findViewById(R.id.textView_header_username) // The ID of your TextView in the nav_header_main.xml
 
+        // Set a click listener on the profile ImageView
+        toolbarProfileImageView.setOnClickListener {
+            // Open the navigation drawer
+            drawerLayout.openDrawer(GravityCompat.START)
+        }
+
         return view
     }
 
@@ -80,8 +86,8 @@ class HomePageFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-//        adViewPager = view.findViewById(R.id.viewpager_ad_banner)
-//        rentalRecyclerView = view.findViewById(R.id.recyclerview_rental_info)
+        adViewPager = view.findViewById(R.id.viewpager_ad_banner)
+        rentalRecyclerView = view.findViewById(R.id.recyclerview_rental_info)
 
         // Set up the toolbar
         (activity as? AppCompatActivity)?.setSupportActionBar(toolbar)
@@ -110,8 +116,8 @@ class HomePageFragment : Fragment() {
         }
 
         loadUserInfo()
-//        setupRentalRecyclerView()
-//        setupAdBanner()
+        setupRentalRecyclerView()
+        setupAdBanner()
     }
 
     private fun loadUserInfo() {
@@ -137,63 +143,63 @@ class HomePageFragment : Fragment() {
     }
 
 
-//    private fun setupAdBanner() {
-//        getAds { adList ->
-//            // Set up the ViewPager2 adapter for the ad banner
-//            val adapter = if (adList.isNotEmpty()) {
-//                AdBannerAdapter(adList)
-//            } else {
-//                // Handle the case where no ads are available
-//                val placeholderAd = Ad(
-//                    title = "No Ads Available",
-//                    address = "No Address Available",
-//                    description = "Check back later for more ads!",
-//                    imageUrl = "https://img.freepik.com/premium-photo/modern-abstract-background_694282-896.jpg"
-//                )
-//                AdBannerAdapter(listOf(placeholderAd))
-//            }
-//            adViewPager.adapter = adapter
-//        }
-//    }
-//    //
-//    private fun setupRentalRecyclerView() {
-//        getRentalInfo { rentInfoList ->
-//            // Set up the RecyclerView adapter for rental information
-//            rentalRecyclerView.layoutManager = GridLayoutManager(context, 2)
-//            rentalRecyclerView.adapter = RentInfoAdapter(rentInfoList)
-//        }
-//    }
-//
-//    private fun getAds(callback: (List<Ad>) -> Unit) {
-//        val adRepository = AdRepository() // Assuming you have an AdRepository class similar to RentInfoRepository
-//
-//        adRepository.retrieveAllAds { adList ->
-//            // Check if adList is not null
-//            if (adList != null) {
-//                // Do any additional processing if needed
-//                // For now, just pass the adList to the callback
-//                callback(adList)
-//            } else {
-//                // Handle the case where retrieving ads failed
-//                callback(emptyList()) // or callback(null) depending on how you want to handle it
-//            }
-//        }
-//    }
-//
-//    //
-//    private fun getRentalInfo(callback: (List<RentInfo>) -> Unit) {
-//        val rentInfoRepository = RentInfoRepository()
-//
-//        rentInfoRepository.retrieveAllRentInfo { rentInfoList ->
-//            // Check if rentInfoList is not null
-//            if (rentInfoList != null) {
-//                // Do any additional processing if needed
-//                // For now, just pass the rentInfoList to the callback
-//                callback(rentInfoList)
-//            } else {
-//                // Handle the case where retrieving rental info failed
-//                callback(emptyList()) // or callback(null) depending on how you want to handle it
-//            }
-//        }
-//    }
+    private fun setupAdBanner() {
+        getAds { adList ->
+            // Set up the ViewPager2 adapter for the ad banner
+            val adapter = if (adList.isNotEmpty()) {
+                AdBannerAdapter(adList)
+            } else {
+                // Handle the case where no ads are available
+                val placeholderAd = Ad(
+                    title = "No Ads Available",
+                    address = "No Address Available",
+                    description = "Check back later for more ads!",
+                    imageUrl = "https://img.freepik.com/premium-photo/modern-abstract-background_694282-896.jpg"
+                )
+                AdBannerAdapter(listOf(placeholderAd))
+            }
+            adViewPager.adapter = adapter
+        }
+    }
+    //
+    private fun setupRentalRecyclerView() {
+        getRentalInfo { rentInfoList ->
+            // Set up the RecyclerView adapter for rental information
+            rentalRecyclerView.layoutManager = GridLayoutManager(context, 2)
+            rentalRecyclerView.adapter = RentInfoAdapter(rentInfoList)
+        }
+    }
+
+    private fun getAds(callback: (List<Ad>) -> Unit) {
+        val adRepository = AdRepository() // Assuming you have an AdRepository class similar to RentInfoRepository
+
+        adRepository.retrieveAllAds { adList ->
+            // Check if adList is not null
+            if (adList != null) {
+                // Do any additional processing if needed
+                // For now, just pass the adList to the callback
+                callback(adList)
+            } else {
+                // Handle the case where retrieving ads failed
+                callback(emptyList()) // or callback(null) depending on how you want to handle it
+            }
+        }
+    }
+
+    //
+    private fun getRentalInfo(callback: (List<RentInfo>) -> Unit) {
+        val rentInfoRepository = RentInfoRepository()
+
+        rentInfoRepository.retrieveAllRentInfo { rentInfoList ->
+            // Check if rentInfoList is not null
+            if (rentInfoList != null) {
+                // Do any additional processing if needed
+                // For now, just pass the rentInfoList to the callback
+                callback(rentInfoList)
+            } else {
+                // Handle the case where retrieving rental info failed
+                callback(emptyList()) // or callback(null) depending on how you want to handle it
+            }
+        }
+    }
 }
