@@ -68,7 +68,7 @@ class PostRentInfo : AppCompatActivity() {
         val selectedHouseType = spinnerHouseType.selectedItem as HouseType
 
         val sharedPreferences = getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
-        val userEmail = sharedPreferences.getString("userEmail", null) ?: "default@email.com"
+        val userId = sharedPreferences.getString("userId", null) ?: ""
 
         selectedImageUri?.let { uri ->
             imageUploader.uploadImage(uri) { imageUrl ->
@@ -81,7 +81,7 @@ class PostRentInfo : AppCompatActivity() {
                         landlordInfo = landlordInfo,
                         rent = rent,
                         category = selectedHouseType,
-                        postedUserId = userEmail
+                        postedUserId = userId
                     )
 
                     rentInfoRepository.saveRentInfo(rentInfo) { isSuccessful ->

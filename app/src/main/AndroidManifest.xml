@@ -21,6 +21,9 @@
             android:name=".view.Post"
             android:exported="false" />
         <activity
+            android:name=".Registration"
+            android:exported="false" />
+        <activity
             android:name=".view.Register"
             android:exported="false" />
         <activity

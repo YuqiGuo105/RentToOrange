@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey">
+    android:background="#FFF0F3">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/profileCard"
@@ -77,7 +77,6 @@
         <!-- Log out Button -->
         <include
             layout="@layout/action_item_log_out"
-
             android:layout_width="match_parent"
             android:layout_height="69dp" />
 
@@ -87,8 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="71dp" />
 
-        <!--        &lt;!&ndash; Manage Rent Info User Posted Button &ndash;&gt;-->
-        <!--        <include layout="@layout/action_item_manage_rent_info" />-->
 
     </LinearLayout>
 

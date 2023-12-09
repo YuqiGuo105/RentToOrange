@@ -1,0 +1,4 @@
+<resources>
+    <!-- Default Navigation Drawer Header Height -->
+    <dimen name="nav_header_height">160dp</dimen>
+</resources>

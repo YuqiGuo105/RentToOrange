@@ -10,4 +10,12 @@
     <string name="logout">Log out</string>
     <string name="sponsored_txt">Sponsored:</string>
     <string name="available_to_rent_txt">Available to Rent:</string>
+    <string name="category_icon_description">category</string>
+    <string name="search">Search</string>
+    <string name="nav_header_title">Titile</string>
+    <string name="nav_header_subtitle">Subtitile</string>
+    <string name="menu_setting">Setting</string>
+    <string name="nav_header_desc">header</string>
+    <string name="search_hint">Searching...</string>
+    <string name="search_icon_description">search icon</string>
 </resources>
