@@ -86,8 +86,6 @@
             android:layout_width="match_parent"
             android:layout_height="71dp" />
 
-<!--        &lt;!&ndash; Manage Rent Info User Posted Button &ndash;&gt;-->
-<!--        <include layout="@layout/action_item_manage_rent_info" />-->
 
     </LinearLayout>
 

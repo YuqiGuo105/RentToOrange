@@ -26,11 +26,11 @@ class Homepage : AppCompatActivity() {
                     true
                 }
                 R.id.nav_category -> {
-                     replaceFragment(CategoryFragment())
+                    replaceFragment(CategoryFragment())
                     true
                 }
                 R.id.nav_user_account -> {
-                     replaceFragment(UserAccountFragment())
+                    replaceFragment(UserAccountFragment())
                     true
                 }
                 else -> false

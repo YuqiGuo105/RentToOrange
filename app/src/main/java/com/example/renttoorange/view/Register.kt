@@ -29,26 +29,10 @@ class Register : AppCompatActivity() {
         val etPassword: EditText = findViewById(R.id.etPassword)
         val etUsername: EditText = findViewById(R.id.etUsername)
         val userTypeRadioGroup: RadioGroup = findViewById(R.id.userTypeRadioGroup)
-        val etVerificationCode: EditText = findViewById(R.id.etVerificationCode)
-        val btnSendVerification: Button = findViewById(R.id.btnSendVerification)
         val btnRegister: Button = findViewById(R.id.btnRegister)
         var verificationCode: String? = "123456"
 
-        btnSendVerification.setOnClickListener {
-            val email = etEmail.text.toString().trim()
 
-            if (email.endsWith("@syr.edu")) {
-                // Generate verification code and send via email
-//                verificationCode = generateVerificationCode()
-
-                ///////////////////// Send Verification Code via Email /////////////////////
-                Toast.makeText(this@Register, "Verification code sent to your email.", Toast.LENGTH_SHORT).show()
-                ///////////////////////////////////////////////////////////////////////////
-
-            } else {
-                Toast.makeText(this, "Renters must use a @syr.edu email", Toast.LENGTH_SHORT).show()
-            }
-        }
 
         btnRegister.setOnClickListener {
             val email = etEmail.text.toString().trim()
@@ -66,10 +50,6 @@ class Register : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (verificationCode == null || etVerificationCode.text.toString().trim() != verificationCode) {
-                Toast.makeText(this, "Invalid verification code!", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
 
             if (password != confirmPassword) {
                 Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show()

@@ -56,4 +56,6 @@ dependencies {
 
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.squareup.picasso:picasso:2.8")
+
+    implementation("androidx.appcompat:appcompat:1.4.1")
 }
