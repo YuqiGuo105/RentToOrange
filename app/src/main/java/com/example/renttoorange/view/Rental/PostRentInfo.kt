@@ -6,6 +6,8 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.provider.MediaStore
 import android.widget.ArrayAdapter
 import android.widget.Button
@@ -18,6 +20,7 @@ import com.example.renttoorange.dao.ImageUploader
 import com.example.renttoorange.dao.RentInfoRepository
 import com.example.renttoorange.model.HouseType
 import com.example.renttoorange.model.RentInfo
+import com.example.renttoorange.view.Homepage
 
 class PostRentInfo : AppCompatActivity() {
     private lateinit var etTitle: EditText
@@ -87,6 +90,16 @@ class PostRentInfo : AppCompatActivity() {
                     rentInfoRepository.saveRentInfo(rentInfo) { isSuccessful ->
                         if (isSuccessful) {
                             showToast("Rent Info Posted Successfully")
+
+                            // Using a Handler to post a delayed action.
+                            Handler(Looper.getMainLooper()).postDelayed({
+                                // Code to navigate back to the User Account Fragment.
+                                // Assuming you're using a NavController to handle fragment transactions.
+                                val back = Intent(this, Homepage::class.java)
+                                startActivity(back)
+                                finish()
+
+                            }, 5000) // 5000 milliseconds delay for 5 seconds.
                         } else {
                             showToast("Failed to Post Rent Info")
                         }
