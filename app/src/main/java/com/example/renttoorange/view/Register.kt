@@ -2,6 +2,7 @@ package com.example.renttoorange.view
 
 import User
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -30,9 +31,6 @@ class Register : AppCompatActivity() {
         val etUsername: EditText = findViewById(R.id.etUsername)
         val userTypeRadioGroup: RadioGroup = findViewById(R.id.userTypeRadioGroup)
         val btnRegister: Button = findViewById(R.id.btnRegister)
-        var verificationCode: String? = "123456"
-
-
 
         btnRegister.setOnClickListener {
             val email = etEmail.text.toString().trim()
@@ -58,9 +56,21 @@ class Register : AppCompatActivity() {
 
             userRepository.registerUser(email, password, username, userType) { user ->
                 if (user != null) {
-                    // Registration success, update UI
-                    Toast.makeText(this, "Registration successful!", Toast.LENGTH_SHORT).show()
+                    // Registration success, send email verification
 
+                    auth.currentUser!!.sendEmailVerification().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("EmailVerification", "Email sent.")
+                            Toast.makeText(this, "Registration successful! Check email to activate account!", Toast.LENGTH_SHORT).show()
+
+                            val intent = Intent(this, LogIn::class.java)
+                            startActivity(intent)
+                            finish()
+                        } else {
+                            // Handle failure in sending email
+                            Toast.makeText(this, "Failed to send verification email.", Toast.LENGTH_SHORT).show()
+                        }
+                    }
                 } else {
                     // Registration failure, update UI
                     Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
