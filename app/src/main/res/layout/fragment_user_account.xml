@@ -86,6 +86,11 @@
             android:layout_width="match_parent"
             android:layout_height="71dp" />
 
+        <!-- Post Rent Info Button -->
+        <include
+            layout="@layout/action_manage_posted_info"
+            android:layout_width="match_parent"
+            android:layout_height="71dp" />
 
     </LinearLayout>
 

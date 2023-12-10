@@ -18,4 +18,5 @@
     <string name="nav_header_desc">header</string>
     <string name="search_hint">Searching...</string>
     <string name="search_icon_description">search icon</string>
+    <string name="manage_rent_info">"Manage posted rental information "</string>
 </resources>
