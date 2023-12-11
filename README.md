@@ -1,6 +1,5 @@
 # RentToOrange
 
-There is a default user account for your guys to log in (in DatabaseHelper.kt file):
-put(COLUMN_EMAIL, "otto@syr.edu")
-put(COLUMN_PASSWORD, "1234")
-put(COLUMN_USERNAME, "Otto")
+There is a default user account to log in:
+Email: otto@syr.edu
+Password: 123456
